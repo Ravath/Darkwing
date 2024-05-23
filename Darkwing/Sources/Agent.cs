@@ -1,50 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DarkWing
 {
-    abstract class Agent
+    abstract class Agent(Sprite sprite, int x, int y)
     {
-        public int x { get; private set; }  //position courante
-        public int y { get; private set; }
-        public int vie { get; private set; }//vie courante
-        protected Sprite sprite;
+        public int X { get; private set; } = x;
+        public int Y { get; private set; } = y;
+        public int Vie { get; private set; }//Current life
+        protected Sprite sprite = sprite;
 
-        //constructeurs
+        //constructors
         public Agent(Sprite sprite) : this(sprite,0,0){}
-        public Agent(Sprite sprite, int x, int y) 
-        {
-            this.sprite = sprite;
-            this.x = x;
-            this.y = y;
-        }
 
-        public void afficher()
+        public void Display()
         {
-            sprite.afficher(x, y);
+            sprite.Display(X, Y);
         }
-        public void subirAttaque(Attaque attaque)
+        public void SubirAttaque(Attaque attaque)
         {
             throw new NotImplementedException();
         }
-        public void decaler(int _x, int _y)
+        public void Shift(int _x, int _y)
         {
-            x += _x;
-            y += _y;
+            X += _x;
+            Y += _y;
         }
-        public void aller(int nx, int ny)
+        public void GoTo(int nx, int ny)
         {
-            this.x = nx;
-            this.y = ny;
+            X = nx;
+            Y = ny;
         }
-        public bool collision(int cx, int cy)
+        public bool Collision(int cx, int cy)
         {
-            return sprite.collision(cx - x, cy - y);
+            // Replace coordinates relative to the sprite coordinates.
+            return sprite.Collision(cx - X, cy - Y);
         }
-        //redéfinie par filles ou délégée par un type ( vs exemplaire )
-        public abstract void agir();
+
+        /// <summary>
+        /// Check if the sprite can move in the given direction without going out of frame.
+        /// </summary>
+        /// <param name="cx">Horizontal shift.</param>
+        /// <param name="cy">Vertical shift.</param>
+        /// <returns>True if not out of bound.</returns>
+        public bool CanMove(int cx, int cy)
+        {
+            if (X+sprite.TopLeftCorner.x+cx < 0 || X+sprite.BottomRightCorner.x+cx >= Console.WindowWidth) 
+                return false;
+            if (Y+sprite.TopLeftCorner.y+cy < 0 || Y+sprite.BottomRightCorner.y+cy >= Console.WindowHeight) 
+                return false;
+            return true;
+        }
+        
+        public abstract void DoAction();
     }
 }

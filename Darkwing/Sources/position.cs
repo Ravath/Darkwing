@@ -33,7 +33,7 @@ namespace DarkWing
         }
         public static Boolean operator==(Position p1, Position p2)
         {
-            if ((Object)p1 == null || (Object)p2 == null)
+            if (p1 is null || p2 is null)
                 return false;
             return p1.x==p2.x && p1.y==p2.y;
         }

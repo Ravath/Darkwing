@@ -8,21 +8,19 @@ namespace DarkWing
 {
     abstract class TypeAgent
     {
-        public int vieInitiale {
+        public int VieInitiale
+        {
             get
             {
-                return vieInitiale;
+                return VieInitiale;
             }
-            protected set
-            {
-                vieInitiale = value;
-            }
+            protected set => VieInitiale = value;
         }
 
         public TypeAgent()
         {
-            vieInitiale = 1;
+            VieInitiale = 1;
         }
-        public abstract void agir();
+        public abstract void DoAction();
     }
 }

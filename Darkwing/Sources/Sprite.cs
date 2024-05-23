@@ -5,31 +5,43 @@ namespace DarkWing
 {
     class Sprite
     {
-        Dictionary<Position, char> parties;
-
+        readonly Dictionary<Position, char> parts;
+        public readonly Position TopLeftCorner;
+        public readonly Position BottomRightCorner;
         public Sprite()
         {
-            parties = new Dictionary<Position, char>();
+            parts = [];
+            TopLeftCorner = new Position(-1, -1);
+            BottomRightCorner = new Position(-1, -1);
         }
-        public void afficher(int x, int y)
+        public void Display(int x, int y)
         {
-            foreach(KeyValuePair<Position, char> kvp in parties)
+            foreach(KeyValuePair<Position, char> kvp in parts)
             {
                 Console.SetCursorPosition(x+kvp.Key.x, y + kvp.Key.y);
                 Console.Write(kvp.Value);
             }
         }
-        public bool collision(int x, int y)
+        public bool Collision(int x, int y)
         {
-            return parties.ContainsKey(new Position(x, y));
+            return parts.ContainsKey(new Position(x, y));
         }
-        public bool collision(Position p)
+        public bool Collision(Position p)
         {
-            return parties.ContainsKey(p);
+            return parts.ContainsKey(p);
         }
-        public void setChar(Position p, char c)
+
+        public void SetChar(Position p, char c)
         {
-            parties.Add(p, c);
+            parts.Add(p, c);
+            if(p.x < TopLeftCorner.x)
+                TopLeftCorner.x = p.x;
+            if(p.y < TopLeftCorner.y)
+                TopLeftCorner.y = p.y;
+            if(p.x > BottomRightCorner.x)
+                BottomRightCorner.x = p.x;
+            if(p.y > BottomRightCorner.y)
+                BottomRightCorner.y = p.y;
         }
     }
 }

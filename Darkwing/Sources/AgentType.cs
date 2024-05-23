@@ -6,19 +6,15 @@ using System.Threading.Tasks;
 
 namespace DarkWing
 {
-    class AgentType : Agent
+    class AgentType(Sprite sprite, TypeAgent type, int x, int y) : Agent(sprite,x,y)
     {
-        private TypeAgent type;
+        private readonly TypeAgent type = type;
 
         public AgentType(Sprite sprite, TypeAgent type) : this(sprite, type,0,0){}
-        public AgentType(Sprite sprite, TypeAgent type, int x, int y) : base(sprite,x,y)
-        {
-            this.type = type;
-        }
 
-        public override void agir()
+        public override void DoAction()
         {
-            type.agir();
+            type.DoAction();
         }
     }
 }
