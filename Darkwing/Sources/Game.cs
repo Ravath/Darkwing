@@ -12,12 +12,14 @@ namespace DarkWing
     {
         private readonly Background background;
         private readonly Player player;
+        private readonly InputMap inputmap;
         private bool end = false;
         private readonly int delay = 40;
         private DateTime last = DateTime.Now;
         public Game()
         {
-            player = new Player();
+            inputmap = new();
+            player = new Player(inputmap);
             player.GoTo(Console.WindowWidth/2, Console.WindowHeight/2);
             background = new Background(Console.WindowWidth, Console.WindowHeight, 1);
             end = false;
@@ -43,6 +45,7 @@ namespace DarkWing
 
         public void ExecuteAction()
         {
+            inputmap.GetActions();
             player.DoAction();
             background.Scroll(1);
 
@@ -55,6 +58,7 @@ namespace DarkWing
                     // TODO collision animation
                 }
             }
+            if(inputmap.RisedAction("escape")) { end = true; }
             background.Scroll(0);   
 
             Console.Clear();
@@ -88,6 +92,8 @@ namespace DarkWing
                     "4 - Credits",
                     "5 - QUIT",
                 };
+                if(!inputmap.IsQwerty())
+                    menuChoices[2] = "3 - AZERTY";
                 for(int i =0; i<menuChoices.Length; i++)
                 {
                     Console.SetCursorPosition(menuPos.x, menuPos.y+i);
@@ -106,6 +112,7 @@ namespace DarkWing
                     case ConsoleKey.D2 :
                         break;
                     case ConsoleKey.D3 :
+                        inputmap.SwapKeyMaps();
                         break;
                     case ConsoleKey.D4 :
                         break;
