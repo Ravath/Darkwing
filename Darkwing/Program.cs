@@ -11,4 +11,5 @@ Console.WriteLine(a == c);
 Console.WriteLine(a.GetHashCode());
 Console.WriteLine(b.GetHashCode());
 Console.WriteLine(c.GetHashCode());
-_ = new Game();
+Game g = new();
+g.Menu();
