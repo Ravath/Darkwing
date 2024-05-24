@@ -43,7 +43,7 @@ namespace DarkWing
             }
             if(game.inputmap.RisedAction("shoot"))
             {
-                game.agents.AddAgent(BotLibrary.PlayerMissile.Duplicate(),
+                game.agents.AddAgent(BotLibrary.PlayerMissile,
                     new Position(X,Y - 1));
             }
         }

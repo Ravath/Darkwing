@@ -7,18 +7,30 @@ using System.Threading.Tasks;
 
 namespace DarkWing
 {
-    public class AgentManager(Game game)
+    public class AgentManager
     {
-        private Game game = game;
-        private List<Agent> agents = [];
+        private readonly Game game;
+        private readonly List<Agent> agents = [];
+
+        private readonly Timer gliderSpawn = new(200);
+
+        public AgentManager(Game game)
+        {
+            this.game = game;
+            gliderSpawn.OnTimer += (t) => {
+                SpawnAtRandom(BotLibrary.GliderMissile);
+            };
+        }
 
         public void Init()
         {
             agents.Clear();
+            gliderSpawn.Init();
         }
 
         public void DoAction()
         {
+            gliderSpawn.ExecuteAction();
             CheckAgents();
             foreach (var agent in agents)
             {
@@ -44,6 +56,7 @@ namespace DarkWing
 
         public void AddAgent(Agent agent, Position position)
         {
+            agent = agent.Duplicate();
             agent.GoTo(position.x, position.y);
             agents.Add(agent);
         }
