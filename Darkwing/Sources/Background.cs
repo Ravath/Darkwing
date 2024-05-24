@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace DarkWing
 {
-    class Background
+    public class Background
     {
         public readonly List<int> left;//left wall position
         public readonly List<int> right;//right wall position
         private readonly int width;
         public readonly int height;
         private readonly int noise;
-        private readonly Random rand;
+        public readonly Random rand;
         public Background(int width, int height, int noise=0) {
             this.height = height;
             this.width = width;

@@ -8,18 +8,20 @@ using System.Timers;
 
 namespace DarkWing
 {
-    class Game
+    public class Game
     {
-        private readonly Background background;
-        private readonly Player player;
-        private readonly InputMap inputmap;
+        public readonly Background background;
+        public readonly Player player;
+        public readonly AgentManager agents;
+        public readonly InputMap inputmap;
         private bool end = false;
         private readonly int delay = 40;
         private DateTime last = DateTime.Now;
         public Game()
         {
             inputmap = new();
-            player = new Player(inputmap);
+            player = new Player(this);
+            agents = new AgentManager(this);
             player.GoTo(Console.WindowWidth/2, Console.WindowHeight/2);
             background = new Background(Console.WindowWidth, Console.WindowHeight, 1);
             end = false;
@@ -30,6 +32,7 @@ namespace DarkWing
         {
             // Init
             player.GoTo(Console.WindowWidth/2, Console.WindowHeight/2);
+            agents.Init();
             end = false;
             last = DateTime.Now;
 
@@ -47,6 +50,7 @@ namespace DarkWing
         {
             inputmap.GetActions();
             player.DoAction();
+            agents.DoAction();
             background.Scroll(1);
 
             for ( int y=0; y<background.height; y++)
@@ -63,6 +67,7 @@ namespace DarkWing
 
             Console.Clear();
             background.Display();
+            agents.Display();
             player.Display();
         }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DarkWing
 {
-    class Sprite
+    public class Sprite
     {
         readonly Dictionary<Position, char> parts;
         public readonly Position TopLeftCorner;

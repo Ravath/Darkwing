@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DarkWing
 {
-    class InputMap
+    public class InputMap
     {
         private readonly HashSet<string> _current_actions = [];
     
@@ -17,6 +17,7 @@ namespace DarkWing
             { 's', "down" },
             { 'a', "left" },
             { 'd', "right" },
+            { 'k', "shoot" },
             { (char)27, "escape" },
         };
         private static readonly Dictionary<char, string> _azerty_action_map = new() {
@@ -24,6 +25,7 @@ namespace DarkWing
             { 's', "down" },
             { 'q', "left" },
             { 'd', "right" },
+            { 'k', "shoot" },
             { (char)27, "escape" },
         };
 

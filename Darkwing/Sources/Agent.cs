@@ -7,34 +7,34 @@ using System.Threading.Tasks;
 
 namespace DarkWing
 {
-    abstract class Agent(Sprite sprite, int x, int y)
+    public class Agent(Sprite sprite, BotBehavior behavior, int x, int y)
     {
         public int X { get; private set; } = x;
         public int Y { get; private set; } = y;
-        public int Vie { get; private set; }//Current life
-        protected Sprite sprite = sprite;
+        public int Life { get; set; } = 1; // Current life
+        public readonly Sprite sprite = sprite;
+        protected readonly BotBehavior behavior = behavior;
 
-        //constructors
-        public Agent(Sprite sprite) : this(sprite,0,0){}
+        // Constructors
+        public Agent(Sprite sprite) : this(sprite, null, 0, 0) {}
 
         public void Display()
         {
             sprite.Display(X, Y);
         }
-        public void SubirAttaque(Attaque attaque)
-        {
-            throw new NotImplementedException();
-        }
+        
         public void Shift(int _x, int _y)
         {
             X += _x;
             Y += _y;
         }
+
         public void GoTo(int nx, int ny)
         {
             X = nx;
             Y = ny;
         }
+
         public bool Collision(int cx, int cy)
         {
             // Replace coordinates relative to the sprite coordinates.
@@ -56,6 +56,18 @@ namespace DarkWing
             return true;
         }
         
-        public abstract void DoAction();
+        public virtual void DoAction()
+        {
+            behavior.DoAction(this);
+        }
+
+        public Agent Duplicate()
+        {
+            Agent ret = new(sprite, behavior, x, y)
+            {
+                Life = Life
+            };
+            return ret;
+        }
     }
 }

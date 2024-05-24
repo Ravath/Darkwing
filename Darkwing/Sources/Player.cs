@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DarkWing
 {
-    class Player : Agent
+    public class Player : Agent
     {
-        private readonly InputMap input;
-        public Player(InputMap input) : base(new Sprite())
+        private readonly Game game;
+        public Player(Game game) : base(new Sprite())
         {
-            this.input = input;
+            this.game = game;
             sprite.SetChar(new Position(0, 0), 'X');
             sprite.SetChar(new Position(-1, 0), '<');
             sprite.SetChar(new Position(1, 0), '>');
@@ -21,25 +21,30 @@ namespace DarkWing
 
         public override void DoAction()
         {
-            if(input.RisedAction("up"))
+            if(game.inputmap.RisedAction("up"))
             {
                 if (CanMove(0, -1))
                     Shift(0, -1);
             }
-            if(input.RisedAction("down"))
+            if(game.inputmap.RisedAction("down"))
             {
                 if (CanMove(0, 1))
                     Shift(0, 1);
             }
-            if(input.RisedAction("right"))
+            if(game.inputmap.RisedAction("right"))
             {
                 if (CanMove(1, 0))
                     Shift(1, 0);
             }
-            if(input.RisedAction("left"))
+            if(game.inputmap.RisedAction("left"))
             {
                 if (CanMove(-1, 0))
                     Shift(-1, 0);
+            }
+            if(game.inputmap.RisedAction("shoot"))
+            {
+                game.agents.AddAgent(BotLibrary.PlayerMissile.Duplicate(),
+                    new Position(X,Y - 1));
             }
         }
     }
