@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Darkwing;
 
 namespace DarkWing
 {
     public class Player : Agent
     {
         const int MAX_LIFE = 3;
+
+        private bool invincible_mode = false;
 
         private readonly Game game;
         public Player(Game game) : base(new Sprite())
@@ -25,6 +28,7 @@ namespace DarkWing
         public void Init()
         {
             Life = MAX_LIFE;
+            invincible_mode = false;
         }
 
         public override void DoAction()
@@ -53,6 +57,32 @@ namespace DarkWing
             {
                 game.agents.AddAgent(BotLibrary.PlayerMissile,
                     new Position(X,Y - 2));
+            }
+        }
+
+        public override void Display()
+        {
+            if(invincible_mode)
+            {
+                Animation.PlayerHit.X = X;
+                Animation.PlayerHit.Y = Y;
+                Animation.PlayerHit.Display();
+                if(!Animation.PlayerHit.Running)
+                {
+                    invincible_mode = false;
+                }
+            }else{
+                base.Display();
+            }
+        }
+
+        public override void Collided(Agent agent)
+        {
+            if(!invincible_mode)
+            {
+                base.Collided(agent);
+                invincible_mode = true;
+                Animation.PlayerHit.Start();
             }
         }
     }

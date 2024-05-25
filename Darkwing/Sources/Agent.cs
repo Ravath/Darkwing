@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Darkwing;
 
 namespace DarkWing
 {
@@ -19,7 +20,7 @@ namespace DarkWing
         // Constructors
         public Agent(Sprite sprite) : this(sprite, null, 0, 0) {}
 
-        public void Display()
+        public virtual void Display()
         {
             sprite.Display(X, Y);
         }
@@ -83,12 +84,14 @@ namespace DarkWing
             return ret;
         }
 
-        public void Collided(Agent agent)
+        public virtual void Collided(Agent agent)
         {
             Life --;
             if(Life <= 0)
             {
                 Game.Instance.AddScore(Score);
+                if(this != Game.Instance.player && agent != Game.Instance.player)
+                    Game.Instance.AddAnimation(Animation.Explosion.Duplicate(X, Y));
             }
         }
     }

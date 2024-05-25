@@ -20,8 +20,8 @@ namespace DarkWing
             TimeSpan t = DateTime.Now - last;
             if (t.Milliseconds < Delay) {
                 OnTimer?.Invoke(this);
+                last = DateTime.Now;
             }
-            last = DateTime.Now;
         }
     }
 }

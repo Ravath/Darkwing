@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Timers;
+using Darkwing;
 
 namespace DarkWing
 {
@@ -21,6 +22,8 @@ namespace DarkWing
         private DateTime last = DateTime.Now;
 
         private int max_score, current_score;
+
+        private List<Animation> animations = [];
 
         public Game()
         {
@@ -43,6 +46,7 @@ namespace DarkWing
             last = DateTime.Now;
             current_score = 0;
             player.Init();
+            animations.Clear();
 
             // Start
             while (!end)
@@ -67,7 +71,7 @@ namespace DarkWing
             if(background.Collision(player))
             {
                 end = true;
-                // TODO collision animation
+                AddAnimation(Animation.Explosion.Duplicate(player.X, player.Y));
             }
             if(player.Life <= 0) { end = true; }
             if(inputmap.RisedAction("escape")) { end = true; }
@@ -75,6 +79,7 @@ namespace DarkWing
 
             Console.Clear();
             background.Display();
+            PlayAnimations();
             agents.Display();
             player.Display();
         }
@@ -164,6 +169,30 @@ namespace DarkWing
                 }
             }
             return false;
+        }
+
+        public void AddAnimation(Animation na)
+        {
+            na.Start();
+            animations.Add(na);
+        }
+
+        private void PlayAnimations()
+        {
+            List<Animation> toremove = [];
+            foreach(var animation in animations)
+            {
+                animation.Display();
+                if(!animation.Running)
+                {
+                    toremove.Add(animation);
+                }
+            }
+            // remove finished animation
+            foreach (var animation in toremove)
+            {
+                animations.Remove(animation);
+            }
         }
 
         public void AddScore(int bonus)

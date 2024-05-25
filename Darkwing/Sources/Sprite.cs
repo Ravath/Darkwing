@@ -18,6 +18,9 @@ namespace DarkWing
         {
             foreach(KeyValuePair<Position, char> kvp in parts)
             {
+                if(x+kvp.Key.x < 0 || y + kvp.Key.y < 0
+                 ||x+kvp.Key.x >= Console.WindowWidth || y + kvp.Key.y >= Console.WindowHeight)
+                    continue;
                 Console.SetCursorPosition(x+kvp.Key.x, y + kvp.Key.y);
                 Console.Write(kvp.Value);
             }
@@ -29,6 +32,17 @@ namespace DarkWing
         public bool Collision(Position p)
         {
             return parts.ContainsKey(p);
+        }
+
+        public void SetCharArray(Position p, char[][] c)
+        {
+            for(int i = 0; i<c.Length; i++)
+            {
+                for(int j = 0; j<c[i].Length; j++)
+                {
+                    SetChar(p + new Position(j,i), c[i][j]);
+                }
+            }
         }
 
         public void SetChar(Position p, char c)
