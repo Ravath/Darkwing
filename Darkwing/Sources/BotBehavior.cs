@@ -18,8 +18,21 @@ namespace DarkWing
 
         public override void DoAction(Agent a)
         {
+            if(a.Life <= 0)
+                return;
             if(a.CanMove(0, vspeed))
-                a.Shift(0,vspeed);
+            {
+                int st = 1, inc = 1;
+                if(vspeed < 0)
+                { st = -1; inc = -1; }
+                for(int i = st; Math.Abs(i) <= Math.Abs(vspeed); i+=inc)
+                {
+                    a.Shift(0,inc);
+                    Game.Instance.Collision(a);
+                    if(a.Life <= 0)
+                        break;
+                }
+            }
             else // Has reached end of display : remove from game
                 a.Life = 0;
         }

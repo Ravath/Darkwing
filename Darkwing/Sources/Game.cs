@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -10,6 +11,7 @@ namespace DarkWing
 {
     public class Game
     {
+        public static Game Instance { get; private set;}
         public readonly Background background;
         public readonly Player player;
         public readonly AgentManager agents;
@@ -22,6 +24,7 @@ namespace DarkWing
 
         public Game()
         {
+            Game.Instance = this;
             inputmap = new();
             player = new Player(this);
             agents = new AgentManager(this);
@@ -39,6 +42,7 @@ namespace DarkWing
             end = false;
             last = DateTime.Now;
             current_score = 0;
+            player.Init();
 
             // Start
             while (!end)
@@ -60,15 +64,12 @@ namespace DarkWing
             agents.DoAction();
             background.Scroll(1);
 
-            for ( int y=0; y<background.height; y++)
+            if(background.Collision(player))
             {
-                if(player.Collision(background.left[y], y)
-                || player.Collision(background.right[y], y))
-                {
-                    end = true;
-                    // TODO collision animation
-                }
+                end = true;
+                // TODO collision animation
             }
+            if(player.Life <= 0) { end = true; }
             if(inputmap.RisedAction("escape")) { end = true; }
             if(!end) { current_score++; }
 
@@ -141,6 +142,33 @@ namespace DarkWing
                         break;
                 }
             }
+        }
+
+        public bool Collision(Agent a)
+        {
+            // - Collided with background
+            if(background.Collision(a))
+            {
+                // Destruction
+                a.Life = 0;
+                return true;
+            }
+            else
+            {
+                Agent? ag = agents.Collision(a);
+                if(ag!=null)
+                {
+                    ag.Collided(a);
+                    a.Collided(ag);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void AddScore(int bonus)
+        {
+            current_score += bonus;
         }
     }
 }

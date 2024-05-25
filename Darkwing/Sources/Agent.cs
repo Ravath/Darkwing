@@ -12,6 +12,7 @@ namespace DarkWing
         public int X { get; private set; } = x;
         public int Y { get; private set; } = y;
         public int Life { get; set; } = 1; // Current life
+        public int Score { get; set; } = 0; // Score bonus when killed
         public readonly Sprite sprite = sprite;
         protected readonly BotBehavior behavior = behavior;
 
@@ -41,6 +42,17 @@ namespace DarkWing
             return sprite.Collision(cx - X, cy - Y);
         }
 
+        public bool Collision(Agent agent)
+        {
+            foreach(var i in sprite.parts)
+            {
+                if(agent.Collision(i.Key.x + X, i.Key.y + Y))
+                    return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Check if the sprite can move in the given direction without going out of frame.
         /// </summary>
@@ -65,9 +77,19 @@ namespace DarkWing
         {
             Agent ret = new(sprite, behavior, x, y)
             {
-                Life = Life
+                Life = Life,
+                Score = Score
             };
             return ret;
+        }
+
+        public void Collided(Agent agent)
+        {
+            Life --;
+            if(Life <= 0)
+            {
+                Game.Instance.AddScore(Score);
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ namespace DarkWing
 {
     public class Sprite
     {
-        readonly Dictionary<Position, char> parts;
+        public readonly Dictionary<Position, char> parts;
         public readonly Position TopLeftCorner;
         public readonly Position BottomRightCorner;
         public Sprite()

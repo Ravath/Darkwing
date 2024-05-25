@@ -108,5 +108,18 @@ namespace DarkWing
             }
 
         }
+
+        public bool Collision(Agent agent)
+        {
+            for ( int y=0; y<height; y++)
+            {
+                if(agent.Collision(left[y], y)
+                || agent.Collision(right[y], y))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -8,15 +8,23 @@ namespace DarkWing
 {
     public class Player : Agent
     {
+        const int MAX_LIFE = 3;
+
         private readonly Game game;
         public Player(Game game) : base(new Sprite())
         {
             this.game = game;
+            Life = 3;
             sprite.SetChar(new Position(0, 0), 'X');
             sprite.SetChar(new Position(-1, 0), '<');
             sprite.SetChar(new Position(1, 0), '>');
             sprite.SetChar(new Position(0, -1), '^');
             sprite.SetChar(new Position(0, 1), '^');
+        }
+
+        public void Init()
+        {
+            Life = MAX_LIFE;
         }
 
         public override void DoAction()
@@ -44,7 +52,7 @@ namespace DarkWing
             if(game.inputmap.RisedAction("shoot"))
             {
                 game.agents.AddAgent(BotLibrary.PlayerMissile,
-                    new Position(X,Y - 1));
+                    new Position(X,Y - 2));
             }
         }
     }

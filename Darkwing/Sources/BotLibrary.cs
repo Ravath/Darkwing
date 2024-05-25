@@ -14,6 +14,7 @@ namespace DarkWing
             BasicMissile.sprite.SetChar(new Position(0, 0), '|');
             GliderMissile.sprite.SetChar(new Position(0, 0), '<');
             GliderMissile.sprite.SetChar(new Position(1, 0), '>');
+            GliderMissile.Score = 3;
         }
     }
 }
