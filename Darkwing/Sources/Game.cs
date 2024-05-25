@@ -17,6 +17,9 @@ namespace DarkWing
         private bool end = false;
         private readonly int delay = 40;
         private DateTime last = DateTime.Now;
+
+        private int max_score, current_score;
+
         public Game()
         {
             inputmap = new();
@@ -35,6 +38,7 @@ namespace DarkWing
             agents.Init();
             end = false;
             last = DateTime.Now;
+            current_score = 0;
 
             // Start
             while (!end)
@@ -44,6 +48,9 @@ namespace DarkWing
                 // Control framerate
                 SynchronizeFrameRate();
             }
+
+            if(current_score > max_score)
+                max_score = current_score;
         }
 
         public void ExecuteAction()
@@ -63,7 +70,7 @@ namespace DarkWing
                 }
             }
             if(inputmap.RisedAction("escape")) { end = true; }
-            background.Scroll(0);   
+            if(!end) { current_score++; }
 
             Console.Clear();
             background.Display();
@@ -96,7 +103,13 @@ namespace DarkWing
                     "3 - QWERTY",
                     "4 - Credits",
                     "5 - QUIT",
+                    "",
+                    "Last Score",
+                    string.Format("  {0:D6}", current_score),
+                    "Max Score",
+                    string.Format("  {0:D6}", max_score),
                 };
+
                 if(!inputmap.IsQwerty())
                     menuChoices[2] = "3 - AZERTY";
                 for(int i =0; i<menuChoices.Length; i++)
@@ -115,6 +128,8 @@ namespace DarkWing
                         StartGame();
                         break;
                     case ConsoleKey.D2 :
+                        max_score = 0;
+                        current_score = 0;
                         break;
                     case ConsoleKey.D3 :
                         inputmap.SwapKeyMaps();
