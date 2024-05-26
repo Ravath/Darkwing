@@ -54,7 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleApplication4\DarkWing.csproj">
+    <ProjectReference Include="..\DarkWing\DarkWing.csproj">
       <Project>{95e0b6b6-4be3-46aa-8223-88cfde96d5a2}</Project>
       <Name>DarkWing</Name>
     </ProjectReference>
