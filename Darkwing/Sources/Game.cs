@@ -136,7 +136,7 @@ namespace DarkWing
                 string[] menuChoices = {
                     "1 - Play Game",
                     "2 - Reset Score",
-                    "3 - QWERTY",
+                    "3 - QWERTY - K",
                     "4 - Credits",
                     "5 - QUIT",
                     "",
@@ -147,7 +147,7 @@ namespace DarkWing
                 };
 
                 if(!inputmap.IsQwerty())
-                    menuChoices[2] = "3 - AZERTY";
+                    menuChoices[2] = "3 - AZERTY - K";
                 for(int i =0; i<menuChoices.Length; i++)
                 {
                     Console.SetCursorPosition(menuPos.x, menuPos.y+i);
