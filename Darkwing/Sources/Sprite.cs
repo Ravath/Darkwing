@@ -57,5 +57,41 @@ namespace DarkWing
             if(p.y > BottomRightCorner.y)
                 BottomRightCorner.y = p.y;
         }
+
+        public static void RectangleFrame(int x1, int y1, int x2, int y2)
+        {
+            // post condition
+            if(x1 < 0 || y1 < 0
+                || x2 >= Console.WindowWidth
+                || y2 >= Console.WindowHeight)
+                throw new ArgumentException(string.Format("x1={0},y1={1},x2={2},y2={3}",x1, y1, x2, y2));
+            for(int i=x1; i<=x2; i++)
+            {
+                for(int j=y1; j<=y2; j++)
+                {
+                    Console.SetCursorPosition(i,j);
+                    if(i==x1 || i==x2)
+                    {
+                        Console.Write("|");
+                    }
+                    else if(j==y1 || j==y2)
+                    {
+                        Console.Write("-");
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+                }
+            }
+            Console.SetCursorPosition(x1,y1);
+            Console.Write("o");
+            Console.SetCursorPosition(x1,y2);
+            Console.Write("o");
+            Console.SetCursorPosition(x2,y1);
+            Console.Write("o");
+            Console.SetCursorPosition(x2,y2);
+            Console.Write("o");
+        }
     }
 }

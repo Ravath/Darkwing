@@ -12,7 +12,7 @@ namespace DarkWing
 {
     public class Game
     {
-        public static Game Instance { get; private set;}
+        public static Game Instance { get; private set; }
         public readonly Background background;
         public readonly Player player;
         public readonly AgentManager agents;
@@ -47,6 +47,7 @@ namespace DarkWing
             current_score = 0;
             player.Init();
             animations.Clear();
+            background.Init();
 
             // Start
             while (!end)
@@ -82,6 +83,17 @@ namespace DarkWing
             PlayAnimations();
             agents.Display();
             player.Display();
+
+            // Display scores
+            Sprite.RectangleFrame(
+                Console.WindowWidth - 18,
+                0,
+                Console.WindowWidth - 1,
+                3);
+            Console.SetCursorPosition(Console.WindowWidth - 16,1);
+            Console.WriteLine("score {0}", current_score);
+            Console.SetCursorPosition(Console.WindowWidth - 16,2);
+            Console.WriteLine("life  {0}", player.Life);
         }
 
         private void SynchronizeFrameRate()
@@ -96,13 +108,31 @@ namespace DarkWing
         public void Menu()
         {
             bool endMenu = false;
-
+            Position menuPos = new(
+                Console.WindowWidth/2 - 10,
+                Console.WindowHeight/2 - 3);
             while(!endMenu)
             {
                 Console.Clear();
-                Position menuPos = new(
-                    Console.WindowWidth/2 - 10,
-                    Console.WindowHeight/2 - 3);
+                // Title
+                Sprite.RectangleFrame(
+                    Console.WindowWidth/2 - 30,
+                    2,
+                    Console.WindowWidth/2 + 30,
+                    8);
+                Sprite.RectangleFrame(
+                    Console.WindowWidth/2 - 29,
+                    3,
+                    Console.WindowWidth/2 + 29,
+                    7);
+                Console.SetCursorPosition(Console.WindowWidth/2 - 8, 5);
+                Console.WriteLine("DARK        WING");
+                // Menu
+                Sprite.RectangleFrame(
+                    Console.WindowWidth/2 - 13,
+                    Console.WindowHeight/2 - 5,
+                    Console.WindowWidth/2 + 12,
+                    Console.WindowHeight/2 + 8);
                 string[] menuChoices = {
                     "1 - Play Game",
                     "2 - Reset Score",
@@ -141,8 +171,47 @@ namespace DarkWing
                         inputmap.SwapKeyMaps();
                         break;
                     case ConsoleKey.D4 :
+                        CreditMenu();
                         break;
                     case ConsoleKey.D5 :
+                        endMenu = true;
+                        break;
+                }
+            }
+        }
+
+        private void CreditMenu()
+        {
+            bool endMenu = false;
+
+            Position menuPos = new(
+                Console.WindowWidth/2 - 23,
+                Console.WindowHeight/2 - 3);
+            while(!endMenu)
+            {
+                Console.Clear();
+                string[] menuChoices = {
+                    "____________________ Development ____________________",
+                    "                Ravath Studios 2024",
+                    "",
+                    "         Github : https://github.com/Ravath",
+                    "",
+                    "",
+                    ">1- Return to Main Menu"
+                };
+                for(int i =0; i<menuChoices.Length; i++)
+                {
+                    Console.SetCursorPosition(menuPos.x, menuPos.y+i);
+                    Console.WriteLine(menuChoices[i]);
+                }
+                
+                ConsoleKeyInfo cki;
+                while (!Console.KeyAvailable) { Thread.Sleep(100); }
+            
+                cki = Console.ReadKey();
+                switch(cki.Key)
+                {
+                    case ConsoleKey.D1 :
                         endMenu = true;
                         break;
                 }

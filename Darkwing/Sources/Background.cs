@@ -8,8 +8,8 @@ namespace DarkWing
 {
     public class Background
     {
-        public readonly List<int> left;//left wall position
-        public readonly List<int> right;//right wall position
+        public readonly List<int> left = [];//left wall position
+        public readonly List<int> right = [];//right wall position
         private readonly int width;
         public readonly int height;
         private readonly int noise;
@@ -18,9 +18,14 @@ namespace DarkWing
             this.height = height;
             this.width = width;
             this.noise = noise;
-            left = [];
-            right = [];
             rand = new Random();
+            Init();
+        }
+
+        public void Init()
+        {
+            left.Clear();
+            right.Clear();
             left.Add(0);
             right.Add(width - 1);
             int _x = 0; // Wall shift
@@ -32,6 +37,7 @@ namespace DarkWing
                 right.Add( Math.Min(width-1, right[i - 1] + _x) );
             }
         }
+
         public void Display()
         {
             for(int i =0; i<height; i++)
