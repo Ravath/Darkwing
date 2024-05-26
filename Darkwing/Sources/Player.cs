@@ -57,6 +57,7 @@ namespace DarkWing
             {
                 game.agents.AddAgent(BotLibrary.PlayerMissile,
                     new Position(X,Y - 2));
+                Game.Instance.AddScore(-2);
             }
         }
 
